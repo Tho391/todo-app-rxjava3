@@ -12,3 +12,5 @@ data class Todo(
     @PrimaryKey
     val id: Long? = null,
 )
+
+class InvalidTodoException(message: String) : Exception(message)

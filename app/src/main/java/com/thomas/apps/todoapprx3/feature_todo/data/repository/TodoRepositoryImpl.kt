@@ -11,7 +11,7 @@ class TodoRepositoryImpl(private val dao: TodoDao) : TodoRepository {
         return dao.getTodos()
     }
 
-    override fun getTodoById(id: Long): Single<Todo> {
+    override fun getTodoById(id: Long): Todo? {
         return dao.getTodoById(id)
     }
 

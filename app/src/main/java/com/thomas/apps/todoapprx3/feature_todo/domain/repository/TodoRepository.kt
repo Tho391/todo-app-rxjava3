@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Single
 interface TodoRepository {
     fun getTodos(): Observable<List<Todo>>
 
-    fun getTodoById(id: Long): Single<Todo>
+    fun getTodoById(id: Long): Todo?
 
     fun insertTodo(todo: Todo)
 

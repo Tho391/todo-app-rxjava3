@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.thomas.apps.todoapprx3.feature_todo.data.data_source.TodoDatabase
 import com.thomas.apps.todoapprx3.feature_todo.data.repository.TodoRepositoryImpl
 import com.thomas.apps.todoapprx3.feature_todo.domain.repository.TodoRepository
+import com.thomas.apps.todoapprx3.feature_todo.domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,5 +30,16 @@ object AppModule {
     @Singleton
     fun provideTodoRepository(db: TodoDatabase): TodoRepository {
         return TodoRepositoryImpl(db.todoDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTodoUseCases(repository: TodoRepository): TodoUseCases {
+        return TodoUseCases(
+            getTodos = GetTodos(repository),
+            getTodo = GetTodo(repository),
+            addTodo = AddTodo(repository),
+            deleteTodo = DeleteTodo(repository)
+        )
     }
 }
