@@ -7,17 +7,21 @@
     <fragment
         android:id="@+id/todosFragment"
         android:name="com.thomas.apps.todoapprx3.feature_todo.presentation.todos.components.TodosFragment"
-        android:label="TodosFragment" >
+        android:label="Todo" >
         <action
             android:id="@+id/action_todosFragment_to_addEditTodoFragment"
             app:destination="@id/addEditTodoFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
             app:launchSingleTop="true"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"
             app:popUpTo="@id/todosFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditTodoFragment"
         android:name="com.thomas.apps.todoapprx3.feature_todo.presentation.add_edit_todo.components.AddEditTodoFragment"
-        android:label="AddEditTodoFragment" >
+        android:label="Todo" >
         <argument
             android:name="id"
             app:argType="long" />

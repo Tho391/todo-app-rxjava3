@@ -22,9 +22,6 @@ class AddEditTodoViewModel @Inject constructor(
     private val _state = MutableStateFlow(AddEditTodoState())
     val state: StateFlow<AddEditTodoState> = _state
 
-//    private val _content = MutableStateFlow("")
-//    val content: StateFlow<String> = _content
-
     private val _event = BehaviorSubject.create<UIEvent>()
     val event: Observable<UIEvent> = _event
 
@@ -41,7 +38,6 @@ class AddEditTodoViewModel @Inject constructor(
                             Timber.e(it)
                         }
                     )
-
             }
         }
     }
