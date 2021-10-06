@@ -6,6 +6,7 @@ import com.thomas.apps.todoapprx3.feature_todo.domain.model.Todo
 import com.thomas.apps.todoapprx3.feature_todo.domain.use_case.TodoUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,8 @@ class AddEditTodoViewModel @Inject constructor(
     private val todoUseCases: TodoUseCases,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    private var disposable: Disposable? = null
 
     private val _state = MutableStateFlow(AddEditTodoState())
     val state: StateFlow<AddEditTodoState> = _state
@@ -45,7 +48,8 @@ class AddEditTodoViewModel @Inject constructor(
     fun onEvent(event: AddEditTodoEvent) {
         when (event) {
             is AddEditTodoEvent.SaveTodo -> {
-                todoUseCases.addTodo(
+                disposable?.dispose()
+                disposable = todoUseCases.addTodo(
                     Todo(
                         title = state.value.title,
                         content = state.value.content,
@@ -59,7 +63,7 @@ class AddEditTodoViewModel @Inject constructor(
                             _event.onNext(UIEvent.SaveSuccess)
                         },
                         {
-                            _event.onNext(UIEvent.ShowSnackbar(it.message ?: "Unknown Error"))
+                            _event.onNext(UIEvent.ShowSnackbar(it.message ?: ""))
                         }
                     )
             }

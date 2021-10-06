@@ -9,11 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
 import com.thomas.apps.todoapprx3.R
 import com.thomas.apps.todoapprx3.databinding.FragmentAddEditTodoBinding
 import com.thomas.apps.todoapprx3.feature_todo.presentation.add_edit_todo.AddEditTodoEvent
 import com.thomas.apps.todoapprx3.feature_todo.presentation.add_edit_todo.AddEditTodoViewModel
+import com.thomas.apps.todoapprx3.utils.view.ActivityUtils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -66,20 +66,25 @@ class AddEditTodoFragment : Fragment() {
         viewModel.event
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { event ->
-                Timber.i("onNext $event")
-                when (event) {
-                    is AddEditTodoViewModel.UIEvent.SaveSuccess -> {
-                        findNavController().popBackStack()
+            .subscribe(
+                { event ->
+                    Timber.i("onNext $event")
+                    when (event) {
+                        is AddEditTodoViewModel.UIEvent.SaveSuccess -> {
+                            findNavController().popBackStack()
+                        }
+                        is AddEditTodoViewModel.UIEvent.ShowSnackbar -> {
+                            showSnackbar(event.message)
+                        }
                     }
-                    is AddEditTodoViewModel.UIEvent.ShowSnackbar -> {
-                        showSnackbar(event.message)
-                    }
+                },
+                {
+                    showSnackbar(it.message ?: "Unknown error")
                 }
-            }
+            )
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+        toast(message)
     }
 }
