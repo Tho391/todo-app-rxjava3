@@ -14,6 +14,6 @@ abstract class TodoDatabase : RoomDatabase() {
     abstract val todoDao: TodoDao
 
     companion object {
-        const val DATABASE_NAME = "notes.db"
+        const val DATABASE_NAME = "todos.db"
     }
 }

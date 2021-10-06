@@ -5,14 +5,14 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
-interface NoteRepository {
+interface TodoRepository {
     fun getTodos(): Observable<List<Todo>>
 
     fun getTodoById(id: Long): Single<Todo>
 
-    fun insertTodo(todo: Todo): Single<Long>
+    fun insertTodo(todo: Todo)
 
-    fun deleteTodo(todo: Todo): Completable
+    fun deleteTodo(todo: Todo)
 
-    fun deleteAllTodos(): Completable
+    fun deleteAllTodos()
 }

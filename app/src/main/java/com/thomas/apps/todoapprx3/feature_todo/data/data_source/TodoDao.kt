@@ -10,17 +10,17 @@ import io.reactivex.rxjava3.core.Single
 interface TodoDao {
 
     @Query("select * from todo")
-    fun getNotes(): Observable<List<Todo>>
+    fun getTodos(): Observable<List<Todo>>
 
     @Query("select * from Todo where id = :id")
-    fun getNoteById(id: Long): Single<Todo>
+    fun getTodoById(id: Long): Single<Todo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNote(note: Todo): Single<Long>
+    fun insertTodo(todo: Todo)
 
     @Delete
-    fun deleteNote(note: Todo): Completable
+    fun deleteTodo(todo: Todo)
 
     @Query("delete from Todo")
-    fun deleteAllNotes(): Completable
+    fun deleteAllTodos()
 }
