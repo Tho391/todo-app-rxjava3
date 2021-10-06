@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoAppRx3">
         <activity
-            android:name=".MainActivity"
+            android:name=".feature_todo.presentation.TodoActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
