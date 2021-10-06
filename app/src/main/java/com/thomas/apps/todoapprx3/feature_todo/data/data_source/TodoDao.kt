@@ -2,6 +2,7 @@ package com.thomas.apps.todoapprx3.feature_todo.data.data_source
 
 import androidx.room.*
 import com.thomas.apps.todoapprx3.feature_todo.domain.model.Todo
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 
@@ -15,7 +16,7 @@ interface TodoDao {
     fun getTodoById(id: Long): Single<Todo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTodo(todo: Todo)
+    fun insertTodo(todo: Todo): Completable
 
     @Delete
     fun deleteTodo(todo: Todo)

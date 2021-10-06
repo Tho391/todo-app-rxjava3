@@ -3,10 +3,12 @@ package com.thomas.apps.todoapprx3.feature_todo.presentation.todos
 import androidx.lifecycle.ViewModel
 import com.thomas.apps.todoapprx3.feature_todo.domain.use_case.TodoUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel

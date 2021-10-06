@@ -18,6 +18,7 @@ import com.thomas.apps.todoapprx3.feature_todo.domain.model.Todo
 import com.thomas.apps.todoapprx3.feature_todo.presentation.todos.TodosViewModel
 import com.thomas.apps.todoapprx3.feature_todo.presentation.utils.SpacingItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 @AndroidEntryPoint
 class TodosFragment : Fragment() {
@@ -36,11 +37,10 @@ class TodosFragment : Fragment() {
             }
             itemClickListener = object : TodoItemAdapter.ItemClickListener {
                 override fun onClick(todo: Todo) {
-//                    val action = TodosFragmentDirections.actionTodosFragmentToAddEditTodoFragment(
-//                        todoId = todo.id ?: -1,
-//                        todoColor = todo.color
-//                    )
-//                    findNavController().navigate(action)
+                    val action = TodosFragmentDirections.actionTodosFragmentToAddEditTodoFragment(
+                        id = todo.id ?: -1
+                    )
+                    findNavController().navigate(action)
                 }
             }
         }
@@ -64,6 +64,10 @@ class TodosFragment : Fragment() {
 
     private fun observe() {
         viewModel.state
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                todoItemAdapter.submitList(it.todos)
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,10 +92,8 @@ class TodosFragment : Fragment() {
 
     private fun setUpFab() {
         binding.fabAddTodo.setOnClickListener {
-//            val action = TodosFragmentDirections.actionTodosFragmentToAddEditTodoFragment(
-//                todoId = -1,
-//            )
-//            findNavController().navigate(action)
+            val action = TodosFragmentDirections.actionTodosFragmentToAddEditTodoFragment(id = -1)
+            findNavController().navigate(action)
         }
     }
 

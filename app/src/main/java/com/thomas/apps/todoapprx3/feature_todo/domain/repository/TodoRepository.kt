@@ -11,7 +11,7 @@ interface TodoRepository {
 
     fun getTodoById(id: Long): Single<Todo>
 
-    fun insertTodo(todo: Todo)
+    fun insertTodo(todo: Todo): Completable
 
     fun deleteTodo(todo: Todo)
 

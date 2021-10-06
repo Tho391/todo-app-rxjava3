@@ -7,5 +7,19 @@
     <fragment
         android:id="@+id/todosFragment"
         android:name="com.thomas.apps.todoapprx3.feature_todo.presentation.todos.components.TodosFragment"
-        android:label="TodosFragment" />
+        android:label="TodosFragment" >
+        <action
+            android:id="@+id/action_todosFragment_to_addEditTodoFragment"
+            app:destination="@id/addEditTodoFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/todosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditTodoFragment"
+        android:name="com.thomas.apps.todoapprx3.feature_todo.presentation.add_edit_todo.components.AddEditTodoFragment"
+        android:label="AddEditTodoFragment" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
 </navigation>
