@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Todo App Rx3</string>
+    <string name="description_add_todo">Add todo</string>
+    <string name="logout">Logout</string>
+    <string name="todo_deleted">Todo deleted</string>
+
+    <string name="sign_out_message">Are you sure you want to logout?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
