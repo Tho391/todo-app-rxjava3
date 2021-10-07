@@ -21,6 +21,7 @@ import com.thomas.apps.todoapprx3.utils.view.ActivityUtils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 
 @AndroidEntryPoint
 class TodosFragment : Fragment() {
@@ -47,6 +48,18 @@ class TodosFragment : Fragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        Timber.i("onCreate ${this.hashCode()}")
+    }
+
+    override fun onDestroy() {
+        Timber.i("onDestroy ${this.hashCode()}")
+
+        super.onDestroy()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,8 +84,8 @@ class TodosFragment : Fragment() {
                 {
                     todoItemAdapter.submitList(it.todos)
                 }, {
+                    Timber.e(it)
                     toast(it.message ?: "Unknown Error")
-
                 }
             )
         viewModel.event
@@ -81,6 +94,7 @@ class TodosFragment : Fragment() {
             .subscribe({ event ->
                 when (event) {
                     is TodosViewModel.UIEvent.Logout -> {
+                        Timber.i("logout ")
                         val action = TodosFragmentDirections.actionTodosFragmentToSplashFragment()
                         findNavController().navigate(action)
                     }
@@ -89,7 +103,8 @@ class TodosFragment : Fragment() {
                     }
                 }
             }, {
-                toast(it.message ?: "Unknown Error")
+                Timber.e(it)
+                //toast(it.message ?: "Unknown Error")
             })
     }
 

@@ -79,6 +79,7 @@ class AddEditTodoFragment : Fragment() {
                     }
                 },
                 {
+                    Timber.e(it)
                     showSnackbar(it.message ?: "Unknown error")
                 }
             )

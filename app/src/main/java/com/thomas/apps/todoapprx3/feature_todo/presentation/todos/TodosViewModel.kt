@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,7 +17,11 @@ class TodosViewModel @Inject constructor(
     private val loginUseCases: LoginUseCases,
 ) : ViewModel() {
 
-    private var disposable: Disposable? = null
+    private var getDisposable: Disposable? = null
+    private var deleteDisposable: Disposable? = null
+    private var logoutDisposable: Disposable? = null
+
+
     private val _state = BehaviorSubject.createDefault(TodoState())
     val state: Observable<TodoState> = _state
 
@@ -28,33 +33,38 @@ class TodosViewModel @Inject constructor(
     }
 
     fun onEvent(event: TodosEvent) {
+        Timber.i("onEvent $event")
         when (event) {
             is TodosEvent.DeleteTodo -> {
-                todoUseCases.deleteTodo(event.todo)
+                deleteDisposable = todoUseCases.deleteTodo(event.todo)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .subscribe({
+                        deleteDisposable?.dispose()
                     }, {
                         _event.onNext(UIEvent.Snackbar(it.message ?: "Unknown Error"))
+                        deleteDisposable?.dispose()
                     })
 
             }
             is TodosEvent.Logout -> {
-                loginUseCases.logout()
+                logoutDisposable = loginUseCases.logout()
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .subscribe({
                         _event.onNext(UIEvent.Logout)
-
+                        logoutDisposable?.dispose()
                     }, {
                         _event.onNext(UIEvent.Snackbar(it.message ?: "Unknown Error"))
+                        logoutDisposable?.dispose()
                     })
+
             }
         }
     }
 
     private fun getTodos() {
-        disposable = todoUseCases.getTodos()
+        getDisposable = todoUseCases.getTodos()
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe {
@@ -65,7 +75,9 @@ class TodosViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        disposable?.dispose()
+        getDisposable?.dispose()
+        deleteDisposable?.dispose()
+        logoutDisposable?.dispose()
 
         super.onCleared()
     }

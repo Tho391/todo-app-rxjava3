@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.thomas.apps.todoapprx3.feature_todo.presentation.login.components.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="" >
         <action
             android:id="@+id/action_loginFragment_to_todosFragment"
             app:destination="@id/todosFragment"
@@ -51,7 +51,7 @@
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.thomas.apps.todoapprx3.feature_todo.presentation.splash.SplashFragment"
-        android:label="SplashFragment" >
+        android:label="" >
         <action
             android:id="@+id/action_splashFragment_to_todosFragment"
             app:destination="@id/todosFragment"

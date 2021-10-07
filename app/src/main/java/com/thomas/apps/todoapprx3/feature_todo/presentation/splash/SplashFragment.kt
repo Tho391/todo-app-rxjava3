@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.thomas.apps.todoapprx3.databinding.FragmentSplashBinding
 import com.thomas.apps.todoapprx3.feature_todo.data.data_source.utils.Cache.getToken
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -33,21 +34,24 @@ class SplashFragment : Fragment() {
     }
 
     private fun checkLoginState() {
-        requireContext().getToken()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ token ->
-                val action = if (token.isEmpty()) {
-                    SplashFragmentDirections.actionSplashFragmentToLoginFragment()
-                } else {
-                    SplashFragmentDirections.actionSplashFragmentToTodosFragment()
-                }
-                findNavController().navigate(action)
-            }, {
-                Timber.e(it)
-                //toast(it.message?: "Unknown Error")
-                val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
-                findNavController().navigate(action)
-            })
+        Completable.timer(1, TimeUnit.SECONDS, Schedulers.io())
+            .subscribe {
+                requireContext().getToken()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ token ->
+                        val action = if (token.isEmpty()) {
+                            SplashFragmentDirections.actionSplashFragmentToLoginFragment()
+                        } else {
+                            SplashFragmentDirections.actionSplashFragmentToTodosFragment()
+                        }
+                        findNavController().navigate(action)
+                    }, {
+                        Timber.e(it)
+                        //toast(it.message?: "Unknown Error")
+                        val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
+                        findNavController().navigate(action)
+                    })
+            }
     }
 }
