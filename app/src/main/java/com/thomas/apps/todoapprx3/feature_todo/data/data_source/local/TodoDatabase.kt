@@ -1,4 +1,4 @@
-package com.thomas.apps.todoapprx3.feature_todo.data.data_source
+package com.thomas.apps.todoapprx3.feature_todo.data.data_source.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

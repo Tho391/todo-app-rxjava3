@@ -1,4 +1,4 @@
-package com.thomas.apps.todoapprx3.feature_todo.domain.use_case
+package com.thomas.apps.todoapprx3.feature_todo.domain.use_case.todos
 
 data class TodoUseCases(
     val getTodos: GetTodos,

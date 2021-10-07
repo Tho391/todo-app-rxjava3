@@ -1,7 +1,8 @@
 package com.thomas.apps.todoapprx3.feature_todo.presentation.todos
 
 import androidx.lifecycle.ViewModel
-import com.thomas.apps.todoapprx3.feature_todo.domain.use_case.TodoUseCases
+import com.thomas.apps.todoapprx3.feature_todo.domain.use_case.login.LoginUseCases
+import com.thomas.apps.todoapprx3.feature_todo.domain.use_case.todos.TodoUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -11,12 +12,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodosViewModel @Inject constructor(
-    private val todoUseCases: TodoUseCases
+    private val todoUseCases: TodoUseCases,
+    private val loginUseCases: LoginUseCases,
 ) : ViewModel() {
 
     private var disposable: Disposable? = null
-    private var deleteDisposable: Disposable? = null
-    private var logoutDisposable: Disposable? = null
     private val _state = BehaviorSubject.createDefault(TodoState())
     val state: Observable<TodoState> = _state
 
@@ -30,18 +30,25 @@ class TodosViewModel @Inject constructor(
     fun onEvent(event: TodosEvent) {
         when (event) {
             is TodosEvent.DeleteTodo -> {
-                deleteDisposable = todoUseCases.deleteTodo(event.todo)
+                todoUseCases.deleteTodo(event.todo)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .subscribe({
-                        deleteDisposable?.dispose()
                     }, {
                         _event.onNext(UIEvent.Snackbar(it.message ?: "Unknown Error"))
                     })
 
             }
             is TodosEvent.Logout -> {
+                loginUseCases.logout()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe({
+                        _event.onNext(UIEvent.Logout)
 
+                    }, {
+                        _event.onNext(UIEvent.Snackbar(it.message ?: "Unknown Error"))
+                    })
             }
         }
     }

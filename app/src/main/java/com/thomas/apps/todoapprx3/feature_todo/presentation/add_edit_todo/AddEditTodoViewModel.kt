@@ -3,7 +3,7 @@ package com.thomas.apps.todoapprx3.feature_todo.presentation.add_edit_todo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.thomas.apps.todoapprx3.feature_todo.domain.model.Todo
-import com.thomas.apps.todoapprx3.feature_todo.domain.use_case.TodoUseCases
+import com.thomas.apps.todoapprx3.feature_todo.domain.use_case.todos.TodoUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable

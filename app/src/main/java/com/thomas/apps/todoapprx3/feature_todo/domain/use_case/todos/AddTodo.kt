@@ -1,4 +1,4 @@
-package com.thomas.apps.todoapprx3.feature_todo.domain.use_case
+package com.thomas.apps.todoapprx3.feature_todo.domain.use_case.todos
 
 import com.thomas.apps.todoapprx3.feature_todo.domain.model.InvalidTodoException
 import com.thomas.apps.todoapprx3.feature_todo.domain.model.Todo

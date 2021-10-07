@@ -81,7 +81,8 @@ class TodosFragment : Fragment() {
             .subscribe({ event ->
                 when (event) {
                     is TodosViewModel.UIEvent.Logout -> {
-
+                        val action = TodosFragmentDirections.actionTodosFragmentToSplashFragment()
+                        findNavController().navigate(action)
                     }
                     is TodosViewModel.UIEvent.Snackbar -> {
                         toast(event.msg)
