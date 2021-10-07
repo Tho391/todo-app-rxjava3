@@ -11,14 +11,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.thomas.apps.todoapprx3.R
 import com.thomas.apps.todoapprx3.databinding.FragmentTodosBinding
 import com.thomas.apps.todoapprx3.feature_todo.domain.model.Todo
+import com.thomas.apps.todoapprx3.feature_todo.presentation.todos.TodosEvent
 import com.thomas.apps.todoapprx3.feature_todo.presentation.todos.TodosViewModel
 import com.thomas.apps.todoapprx3.feature_todo.presentation.utils.SpacingItemDecorator
+import com.thomas.apps.todoapprx3.utils.view.ActivityUtils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 @AndroidEntryPoint
 class TodosFragment : Fragment() {
@@ -31,8 +33,7 @@ class TodosFragment : Fragment() {
         TodoItemAdapter().apply {
             deleteClickListener = object : TodoItemAdapter.DeleteClickListener {
                 override fun onDelete(todo: Todo) {
-//                    viewModel.onEvent(TodosEvent.DeleteTodo(todo))
-//                    showDeleteSnackbar()
+                    viewModel.onEvent(TodosEvent.DeleteTodo(todo))
                 }
             }
             itemClickListener = object : TodoItemAdapter.ItemClickListener {
@@ -64,10 +65,31 @@ class TodosFragment : Fragment() {
 
     private fun observe() {
         viewModel.state
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                todoItemAdapter.submitList(it.todos)
-            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    todoItemAdapter.submitList(it.todos)
+                }, {
+                    toast(it.message ?: "Unknown Error")
+
+                }
+            )
+        viewModel.event
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ event ->
+                when (event) {
+                    is TodosViewModel.UIEvent.Logout -> {
+
+                    }
+                    is TodosViewModel.UIEvent.Snackbar -> {
+                        toast(event.msg)
+                    }
+                }
+            }, {
+                toast(it.message ?: "Unknown Error")
+            })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,18 +137,12 @@ class TodosFragment : Fragment() {
         }
     }
 
-    private fun showDeleteSnackbar() {
-        Snackbar.make(binding.root, R.string.todo_deleted, Snackbar.LENGTH_SHORT)
-            .setAnchorView(binding.fabAddTodo)
-            .show()
-    }
-
     private fun showSignOutDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.logout)
             .setMessage(R.string.sign_out_message)
             .setPositiveButton(R.string.ok) { _, _ ->
-                //viewModel.onEvent(TodosEvent.SignOut)
+                viewModel.onEvent(TodosEvent.Logout)
             }
             .setNegativeButton(R.string.cancel, null)
             .show()

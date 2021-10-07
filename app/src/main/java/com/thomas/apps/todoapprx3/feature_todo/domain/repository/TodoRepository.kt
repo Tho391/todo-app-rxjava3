@@ -13,7 +13,7 @@ interface TodoRepository {
 
     fun insertTodo(todo: Todo): Completable
 
-    fun deleteTodo(todo: Todo)
+    fun deleteTodo(todo: Todo): Completable
 
-    fun deleteAllTodos()
+    fun deleteAllTodos(): Completable
 }

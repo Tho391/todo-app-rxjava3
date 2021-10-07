@@ -19,8 +19,8 @@ interface TodoDao {
     fun insertTodo(todo: Todo): Completable
 
     @Delete
-    fun deleteTodo(todo: Todo)
+    fun deleteTodo(todo: Todo): Completable
 
     @Query("delete from Todo")
-    fun deleteAllTodos()
+    fun deleteAllTodos(): Completable
 }

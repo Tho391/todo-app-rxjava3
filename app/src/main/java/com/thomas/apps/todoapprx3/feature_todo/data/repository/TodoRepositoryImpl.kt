@@ -21,11 +21,11 @@ class TodoRepositoryImpl(private val dao: TodoDao) : TodoRepository {
        return dao.insertTodo(todo)
     }
 
-    override fun deleteTodo(todo: Todo) {
-        dao.deleteTodo(todo)
+    override fun deleteTodo(todo: Todo): Completable {
+      return  dao.deleteTodo(todo)
     }
 
-    override fun deleteAllTodos() {
-        dao.deleteAllTodos()
+    override fun deleteAllTodos() : Completable{
+       return dao.deleteAllTodos()
     }
 }
